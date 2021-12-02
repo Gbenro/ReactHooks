@@ -1,32 +1,26 @@
 import "./App.scss";
-import React, { useState, useEffect } from "react";
-
-const initProfile = {
-  followers: null,
-  publicRepos: null,
-};
-
+import React, { useState, useMemo } from "react";
+import Child from "./components/child";
 function App() {
-  const [profile, setProfile] = useState(initProfile);
+  const [i, setI] = useState(0);
 
-  const getProfile = async () => {
-    const res = await fetch("https://api.github.com/users/gbenro");
-    const json = await res.json();
+  function onClickHandle() {
+    setI(i + 1);
+  }
 
-    setProfile({
-      followers: json.followers,
-      publicRepos: json.public_repos,
-    });
-  };
-
-  useEffect(() => {
-    getProfile();
-  }, []);
+  const memoChild = useMemo(() => {
+    return <Child />;
+  }, [i]);
   return (
     <div className="App">
       <header className="App-header">
-        <h2>Fetch data</h2>
-        <h3>{`Followers: ${profile.followers}, Repos: ${profile.publicRepos}`}</h3>
+        <h2>useMemo</h2>
+        <h2>i: {i}</h2>
+        <button onClick={onClickHandle}>Increment i</button>
+        <h3>Normal render</h3>
+        <Child />
+        <h3>Memo render</h3>
+        {memoChild}
       </header>
     </div>
   );
