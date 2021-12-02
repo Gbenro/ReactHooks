@@ -17,6 +17,8 @@ function App() {
       clearInterval(handle);
     };
   });
+
+  //for x and y
   const mousemoveHandle = (e) => {
     setXY({
       x: e.clientX,
