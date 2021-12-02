@@ -18,7 +18,7 @@ function App() {
     };
   });
 
-  //for x and y
+  //for x and y positions
   const mousemoveHandle = (e) => {
     setXY({
       x: e.clientX,
