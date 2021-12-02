@@ -1,20 +1,32 @@
 import "./App.scss";
-import React, { useState } from "react";
-import usePrevious from "./hooks/usePrevious";
+import React, { useRef, useState, useLayoutEffect } from "react";
+
+function useDim(el, val) {
+  const [height, setHeight] = useState(0);
+  const [width, setWidth] = useState(0);
+  useLayoutEffect(() => {
+    let boundingBox = el.current.getBoundingClientRect();
+    setHeight(boundingBox.height);
+    setWidth(boundingBox.width);
+  }, [val]);
+
+  return { height, width };
+}
 
 function App() {
-  const [age, setAge] = useState(21);
-  const previousAge = usePrevious(age);
+  const [val, setVal] = useState(2);
 
-  function onClickHandle() {
-    setAge(age - 1);
-  }
+  const valEl = useRef(null);
+
+  const { height, width } = useDim(valEl, val);
   return (
     <div className="App">
       <header className="App-header">
-        <h3>Current Age: {age}</h3>
-        <h3>Previous Age: {previousAge}</h3>
-        <button onClick={onClickHandle}>Make me Younger</button>
+        <h1>
+          Height: {height}, Width: {width}
+        </h1>
+        <div ref={valEl}>{val}</div>
+        <button onClick={() => setVal(val * 10)}>10X</button>
       </header>
     </div>
   );
