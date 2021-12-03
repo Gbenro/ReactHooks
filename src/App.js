@@ -1,47 +1,39 @@
 import "./App.scss";
-import React from "react";
-import {
-  BrowserRouter as Router,
-  NavLink,
-  Routes,
-  Route,
-} from "react-router-dom";
-import Homepage from "./pages/homepage";
-import Withdraw from "./pages/withdrawPage";
-import Deposit from "./pages/depositPage";
+import React, { useReducer, useRef } from "react";
+
+const initState = {
+  count: 0,
+};
+function reducerFunction(state, action) {
+  switch (action.type) {
+    case "INCREMENT":
+      return { count: state.count + 1 };
+    case "DECREMENT":
+      return { count: state.count - 1 };
+    default:
+      return state;
+  }
+}
 
 function App() {
-  return (
-    <Router>
-      <div className="App">
-        <header className="App-header">
-          <ul className="ul-style">
-            <li className="li-style">
-              {" "}
-              <NavLink className="App-link" to="/">
-                Home
-              </NavLink>
-            </li>
-            <li className="li-style">
-              <NavLink className="App-link" to="/deposit">
-                Deposit
-              </NavLink>
-            </li>
-            <li className="li-style">
-              <NavLink className="App-link" to="/withdraw">
-                Withdraw
-              </NavLink>
-            </li>
-          </ul>
+  const [state, dispatch] = useReducer(reducerFunction, initState);
 
-          <Routes>
-            <Route path="/withdraw" element={<Withdraw />} exact />
-            <Route path="/deposit" element={<Deposit />} exact />
-            <Route path="/" element={<Homepage />} exact />
-          </Routes>
-        </header>
-      </div>
-    </Router>
+  function plusOne() {
+    dispatch({ type: "INCREMENT" });
+  }
+  function minusOne() {
+    dispatch({ type: "DECREMENT" });
+  }
+  return (
+    <div className="App">
+      <header className="App-header">
+        <h2>useReducer example</h2>
+        <h2>Count: {state.count}</h2>
+
+        <button onClick={plusOne}>Plus one</button>
+        <button onClick={minusOne}>Minus one</button>
+      </header>
+    </div>
   );
 }
 
