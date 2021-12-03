@@ -2,7 +2,8 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 function Deposit() {
-  const balance = useSelector((state) => state.balance);
+  const balance = useSelector((state) => state.balanceReducer.balance);
+  const loan = useSelector((state) => state.loanReducer.loan);
   const dispatch = useDispatch();
 
   function onDepositHandle() {
@@ -13,8 +14,10 @@ function Deposit() {
     <>
       <h2>Deposit Page</h2>
       <h3>Balance: {balance}</h3>
-
-      <button onClick={onDepositHandle}>Deposit 5</button>
+      <h2>{loan ? "Loan Applied" : "Loan Needed"}</h2>
+      <button className="button-style" onClick={onDepositHandle}>
+        Deposit 5
+      </button>
     </>
   );
 }
