@@ -1,40 +1,33 @@
 import "./App.scss";
-import React, { useReducer, useRef } from "react";
+import React, { useReducer } from "react";
+import { observer, useLocalStore } from "mobx-react-lite";
 
-const initState = {
-  count: 0,
-};
-function reducerFunction(state, action) {
-  switch (action.type) {
-    case "INCREMENT":
-      return { count: state.count + 1 };
-    case "DECREMENT":
-      return { count: state.count - 1 };
-    default:
-      return state;
+const App = observer(() => {
+  const store = useLocalStore(() => ({
+    count: 1,
+    addOne() {
+      store.count++;
+    },
+    subtractOne() {
+      store.count--;
+    },
+  }));
+  function addOneHandle() {
+    store.addOne();
   }
-}
 
-function App() {
-  const [state, dispatch] = useReducer(reducerFunction, initState);
-
-  function plusOne() {
-    dispatch({ type: "INCREMENT" });
-  }
-  function minusOne() {
-    dispatch({ type: "DECREMENT" });
+  function subtractOneHandle() {
+    store.subtractOne();
   }
   return (
     <div className="App">
       <header className="App-header">
-        <h2>useReducer example</h2>
-        <h2>Count: {state.count}</h2>
-
-        <button onClick={plusOne}>Plus one</button>
-        <button onClick={minusOne}>Minus one</button>
+        <h1>Count:{store.count}</h1>
+        <button onClick={addOneHandle}> Add one</button>
+        <button onClick={subtractOneHandle}> Minus one</button>
       </header>
     </div>
   );
-}
+});
 
 export default App;
