@@ -1,30 +1,47 @@
 import "./App.scss";
-import React, { useState } from "react";
-import useCustomFetch from "./hooks/useCustomFetch";
+import React from "react";
+import {
+  BrowserRouter as Router,
+  NavLink,
+  Routes,
+  Route,
+} from "react-router-dom";
+import Homepage from "./pages/homepage";
+import Withdraw from "./pages/withdrawPage";
+import Deposit from "./pages/depositPage";
 
 function App() {
-  const [url, setUrl] = useState(null);
-  const { data, loading, error } = useCustomFetch(url);
-  function getFollowers(e) {
-    if (e.key === "Enter") {
-      setUrl("https://api.github.com/users/" + e.target.value);
-    }
-  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <h2>
-          {" "}
-          GitID:
-          <input onKeyPress={getFollowers} />
-          {loading && url && <div> Loading....</div>}
-          {!loading && data && data.rData && data.rData.followers && (
-            <div> Followers: {data.rData.followers}</div>
-          )}
-          {error && <div>Error: {error}</div>}
-        </h2>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <header className="App-header">
+          <ul className="ul-style">
+            <li className="li-style">
+              {" "}
+              <NavLink className="App-link" to="/">
+                Home
+              </NavLink>
+            </li>
+            <li className="li-style">
+              <NavLink className="App-link" to="/deposit">
+                Deposit
+              </NavLink>
+            </li>
+            <li className="li-style">
+              <NavLink className="App-link" to="/withdraw">
+                Withdraw
+              </NavLink>
+            </li>
+          </ul>
+
+          <Routes>
+            <Route path="/withdraw" element={<Withdraw />} exact />
+            <Route path="/deposit" element={<Deposit />} exact />
+            <Route path="/" element={<Homepage />} exact />
+          </Routes>
+        </header>
+      </div>
+    </Router>
   );
 }
 
